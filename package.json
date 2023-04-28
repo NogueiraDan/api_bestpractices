@@ -1,0 +1,18 @@
+{
+  "name": "api_bestpratices",
+  "version": "1.0.0",
+  "description": "API destinada ao estudo de boas práticas e Backend",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "cd src && nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
