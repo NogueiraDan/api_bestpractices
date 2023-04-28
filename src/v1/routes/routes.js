@@ -1,10 +1,17 @@
 // In src/v1/routes/routes.js
 const express = require("express");
 const router = express.Router();
+const workoutController = require("../controllers/workoutController")
 
-router.get("/", (req, res) => {
-  res.send(`<h2>Initial Route from ${req.baseUrl}</h2>`);
-});
+router.get("/", workoutController.getAllWorkouts);
+
+router.get("/:workoutId", workoutController.getOneWorkout);
+
+router.post("/", workoutController.createNewWorkout);
+
+router.patch("/:workoutId", workoutController.updateOneWorkout);
+
+router.delete("/:workoutId", workoutController.deleteOneWorkout);
 
 
 module.exports = router;
