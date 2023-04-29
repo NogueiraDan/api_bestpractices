@@ -79,7 +79,11 @@ const updateOneWorkout = (workoutId, changes) => {
       updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
     };
     DB.workouts[indexForUpdate] = updatedWorkout;
-    saveToDatabase(DB);
+    
+    // Persistência no Banco Fake
+    fs.writeFileSync("../src/database/db.json", JSON.stringify(DB, null, 2), {
+      encoding: "utf-8",
+    });
     return updatedWorkout;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
