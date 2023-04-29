@@ -8,6 +8,6 @@
 ## 3 - Tratativa de erros com os Status HTTPS
 
 ## 4 - Aninhamento Lógico
-### // /api/v1/workouts/:workoutId/records => Aninhamento de endpoint que mapeia recorde de um usuário. Basicamente aninhar recursos que são parecidos em niveis de profundidade.
+### Aninhamento em endpoints que por ex: Mapeia recorde de um usuário. Basicamente aninhar recursos que são parecidos em niveis de profundidade.
 
 ## 5 - filtragem, classificação e paginação das respostas da API
