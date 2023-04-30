@@ -1,8 +1,11 @@
 const workoutService = require("../services/workoutService");
+const database = require("../../database/database");
+const { v4: uuid } = require("uuid");
 
 const getAllWorkouts = (req, res) => {
+  const { mode } = req.query;
   try {
-    const allWorkouts = workoutService.getAllWorkouts();
+    const allWorkouts = database.getAllWorkouts({mode});
     res.send({ status: "OK", data: allWorkouts });
   } catch (error) {
     res
@@ -19,7 +22,7 @@ const getOneWorkout = (req, res) => {
   if (!workoutId) {
     return res.status(404).send({ message: "Parameter ':workoutId' can not be empty" });
   }
-  const workout = workoutService.getOneWorkout(workoutId);
+  const workout = database.getOneWorkout(workoutId);
   res.send({ status: "OK", data: workout });
 };
 
@@ -49,7 +52,13 @@ const createNewWorkout = (req, res) => {
   };
 
   try {
-    const createdWorkout = workoutService.createNewWorkout(newWorkout);
+    const workoutToInsert = {
+      ...newWorkout,
+      id: uuid(),
+      createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+    };
+    const createdWorkout = database.createNewWorkout(workoutToInsert);
     res.status(201).send({ status: "OK", data: createdWorkout });
   } catch (error) {
     // Captura o erro que o service lança, trata e exibe a mensagem.
@@ -71,7 +80,7 @@ const updateOneWorkout = (req, res) => {
   }
 
   try {
-    const updatedWorkout = workoutService.updateOneWorkout(workoutId, body);
+    const updatedWorkout = database.updateOneWorkout(workoutId, body);
     res.send({ status: "OK", data: updatedWorkout });
   } catch (error) {
     res
@@ -89,7 +98,7 @@ const deleteOneWorkout = (req, res) => {
     return res.status(404).send({ message: "Parameter ':workoutId' can not be empty" });
   }
   try {
-    workoutService.deleteOneWorkout(workoutId);
+    database.deleteOneWorkout(workoutId);
     res.status(204).send({ status: "OK" });
   } catch (error) {
     res

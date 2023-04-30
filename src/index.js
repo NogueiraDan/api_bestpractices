@@ -8,7 +8,7 @@ const v2Router = require("./v2/routes/routes")
 
 app.use(bodyParser.json());
 //API V1
-app.use("/api/v1/workouts", v1Router);
+app.use("/api/v1/workouts/", v1Router);
 
 //API V2
 app.use("/api/v2/", v2Router);

@@ -3,9 +3,18 @@ const DB = require("./db.json");
 const fs = require("fs");
 
 // Retorna todos os exercicios
-const getAllWorkouts = () => {
+const getAllWorkouts = (filterParams) => {
   try {
+    let workouts = DB.workouts;
+    if (filterParams.mode) {
+      return DB.workouts.filter((workout) =>
+        workout.mode.toLowerCase().includes(filterParams.mode)
+      );
+    }
+
+    // Caso não tenha query params, retorna tudo para não quebrar a aplicação.
     return DB.workouts;
+    
   } catch (error) {
     throw { status: 500, message: error };
   }
@@ -46,19 +55,16 @@ const createNewWorkout = (newWorkout) => {
     return newWorkout;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
-    
   }
-
 };
 
 // Atualiza um exercicio
 const updateOneWorkout = (workoutId, changes) => {
-
   try {
     const isAlreadyAdded =
       DB.workouts.findIndex((workout) => workout.name === changes.name) > -1;
-    
-      if (isAlreadyAdded) {
+
+    if (isAlreadyAdded) {
       throw {
         status: 400,
         message: `Workout with the name '${changes.name}' already exists`,
@@ -79,7 +85,7 @@ const updateOneWorkout = (workoutId, changes) => {
       updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
     };
     DB.workouts[indexForUpdate] = updatedWorkout;
-    
+
     // Persistência no Banco Fake
     fs.writeFileSync("../src/database/db.json", JSON.stringify(DB, null, 2), {
       encoding: "utf-8",
@@ -103,7 +109,7 @@ const deleteOneWorkout = (workoutId) => {
       };
     }
     DB.workouts.splice(indexForDeletion, 1);
-    
+
     // Persistência no Banco Fake
     fs.writeFileSync("../src/database/db.json", JSON.stringify(DB, null, 2), {
       encoding: "utf-8",
@@ -112,8 +118,6 @@ const deleteOneWorkout = (workoutId) => {
     throw { status: error?.status || 500, message: error?.message || error };
   }
 };
-
-
 
 module.exports = {
   getOneWorkout,
